@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
 
-const checkAuth = async (req, res, next) => {
+const checkAdmin = async (req, res, next) => {
     let token
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
@@ -13,6 +13,10 @@ const checkAuth = async (req, res, next) => {
             if(!req.user) {
                 const error = new Error('User not found')
                 return res.status(401).json({ msg: error.message, success: false })
+            }
+
+            if(req.user.role && req.user.role !== 'admin') {
+                return res.json({ msg: 'Insufficient permissions', success: false })
             }
 
             return next()
@@ -29,4 +33,4 @@ const checkAuth = async (req, res, next) => {
     next()
 }
 
-export default checkAuth
+export default checkAdmin

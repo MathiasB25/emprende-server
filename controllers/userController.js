@@ -72,7 +72,7 @@ const confirm = async (req, res) => {
     try {
         user.confirmed = true
         user.token = ''
-        user.save()
+        await user.save()
         res.json({ success: true })
     } catch (error) {
         console.log(error)
@@ -90,7 +90,7 @@ const resetPassword = async (req, res) => {
 
     try {
         user.token = createToken()
-        user.save()
+        await user.save()
         /* TODO: Importar nodemailer al proyecto y enviar email cuando el usuario resetee su password */
         res.json({ success: true })
     } catch (error) {

@@ -7,6 +7,14 @@ const userSchema = mongoose.Schema({
         required: true,
         trim: true
     },
+    surname: {
+        type: String,
+        required: true
+    },
+    phoneNumber: {
+        type: Number,
+        trim: true
+    },
     email: {
         type: String,
         required: true,
@@ -17,6 +25,11 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: true
+    },
+    role: {
+        type: String,
+        enum: ['client', 'admin'],
+        default: 'client'
     },
     token: {
         type: String
