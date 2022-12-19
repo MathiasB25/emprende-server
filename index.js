@@ -6,7 +6,6 @@ import userRoutes from './routes/userRoutes.js'
 import storeRoutes from './routes/storeRoutes.js'
 import templateRoutes from './routes/templateRoutes.js'
 import myStoreRoutes from './routes/myStoreRoutes.js'
-import { CreateTemplateElements, CreateTemplateSections } from './scripts/Template.js';
 
 const app = express()
 app.use(express.json()) 
