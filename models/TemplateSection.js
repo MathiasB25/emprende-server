@@ -15,8 +15,12 @@ const templateSectionSchema = mongoose.Schema({
             ref: 'TemplateElement'
         }
     ],
-    media: {
-        type: String
+    style: {
+        height: {
+            type: String,
+            enum: ['small', 'medium', 'large'],
+            default: 'medium'
+        }
     }
 }, {
     timestamps: true

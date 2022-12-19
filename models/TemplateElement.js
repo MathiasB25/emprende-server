@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const templateElementSchema = mongoose.Schema({
     name: {
@@ -7,6 +7,10 @@ const templateElementSchema = mongoose.Schema({
     component: {
         type: String,
         required: true
+    },
+    storeCollection: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'StoreCollection'
     },
     value: {
         heading: {
@@ -21,14 +25,20 @@ const templateElementSchema = mongoose.Schema({
         media: {
             type: String
         },
+        href: {
+            type: String
+        },
+        alt: {
+            type: String
+        },
         price: {
-            amount: {
+            price: {
                 type: Number
             },
             currency: {
                 type: String
             },
-            soldOut: {
+            stock: {
                 type: Boolean
             }
         },
@@ -40,13 +50,24 @@ const templateElementSchema = mongoose.Schema({
                 type: String,
                 enum: ['small', 'medium', 'large', 'extra']
             },
+            weigth: {
+                type: String
+            },
+            width: {
+                type: String
+            },
             align: {
                 type: String,
                 enum: ['left', 'center', 'right']
             },
             bg: {
-                type: String,
-                enum: ['bg-1', 'bg-2']
+                type: String
+            },
+            color: {
+                type: String
+            },
+            aspectRatio: {
+                type: String
             }
         }
     }

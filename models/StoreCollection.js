@@ -3,7 +3,12 @@ import mongoose from "mongoose";
 const storeCollectionSchema = mongoose.Schema({
     store: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: 'Store'
+        ref: 'Store',
+        required: true
+    },
+    id: {
+        type: String,
+        required: true
     },
     title: {
         type: String,
@@ -13,17 +18,13 @@ const storeCollectionSchema = mongoose.Schema({
         type: String
     },
     media: {
-        type: String
+        type: String,
+        default: null
     },
-    products: [
-        {
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: 'StoreProduct'
-        }
-    ],
     status: {
         type: String,
-        enum: ['active', 'inactive']
+        enum: ['active', 'inactive'],
+        default: 'active'
     }
 }, {
     timestamps: true

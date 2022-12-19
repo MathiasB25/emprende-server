@@ -5,6 +5,10 @@ const storeProductSchema = mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'Store'
     },
+    id: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true
@@ -27,7 +31,7 @@ const storeProductSchema = mongoose.Schema({
             type: String,
             element: {
                 type: String,
-                enum: ['video', 'image']
+                enum: ['Video', 'Image']
             }
         }
     ],
@@ -35,17 +39,15 @@ const storeProductSchema = mongoose.Schema({
         type: String,
         enum: ['active', 'draft']
     },
-    inventory: [
-        {
-            stock: {
-                type: Number
-            },
-            sellWithoutStock: {
-                type: Boolean,
-                default: false
-            }
+    inventory: {
+        stock: {
+            type: Number
+        },
+        sellWithoutStock: {
+            type: Boolean,
+            default: false
         }
-    ],
+    },
     shipping: [
         {
             weight: {

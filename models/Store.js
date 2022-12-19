@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const storeSchema = mongoose.Schema({
     user: {
@@ -14,13 +14,20 @@ const storeSchema = mongoose.Schema({
     url: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        unique: true
     },
     template: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'Template',
-        required: true
-    }
+        default: null
+    },
+    ownedTemplates: [
+        {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: 'Template'
+        }
+    ]
 }, {
     timestamps: true
 })

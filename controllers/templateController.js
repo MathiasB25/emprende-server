@@ -10,28 +10,65 @@ import randomNumber from "../helpers/randomNumber.js";
 const ObjectId = mongoose.Types.ObjectId;
 
 const getTemplates = async (req, res) => {
-    return res.json({ success: true, data: await Template.find() });
+    const { limit } = req.query;
+
+    if(!limit) {
+        return res.json({ success: true, data: await Template.find({ status: 'active' }) });
+    }
+
+    return res.json({ success: true, data: await Template.find({ status: 'active' }).limit(limit) });
 }
 
 const getTemplate = async (req, res) => {
-    const { _id } = req.body;
+    const { id } = req.body;
     const { populate } = req.query;
 
-    if(!ObjectId.isValid(_id)) {
-        return res.json({ msg: 'Invalid ID', success: false })
+    const template = await Template.findOne({id})
+    if(!template) {
+        return res.json({ success: false, msg: "No template found" });
     }
-
+    
     if(!populate) {
-        return res.json({ success: true, data: await Template.findById(_id) });
+        return res.json({ success: true, data: await Template.findOne({id}) });
     }
 
     switch (populate) {
         case '1':
-            return res.json({ success: true, data: await Template.findById(_id).populate('pages') });
+            return res.json({ 
+                success: true, 
+                data: await Template.findOne({id}).populate({
+                    path: 'pages', 
+                    select: '-createdAt -updatedAt -__v'
+                })
+            });
         case '2':
-            return res.json({ success: true, data: await (await Template.findById(_id).populate('pages')).populate('pages.sections') });
+            return res.json({ 
+                success: true, 
+                data: await Template.findOne({id}).populate({
+                    path: 'pages', 
+                    select: '-createdAt -updatedAt -__v',
+                    populate: { 
+                        path: 'sections',
+                        select: '-createdAt -updatedAt -__v'
+                    }
+                })
+            });
         case '3':
-            return res.json({ success: true, data: await (await (await Template.findById(_id).populate('pages')).populate('pages.sections')).populate('pages.sections.elements') });
+            return res.json({
+                success: true, 
+                data: await Template.findOne({id}).populate({ 
+                    path: 'pages', 
+                    select: '-createdAt -updatedAt -__v',
+                    populate: { 
+                        path: 'sections', 
+                        select: '-createdAt -updatedAt -__v',
+                        populate: { 
+                            path: 'elements',
+                            select: '-createdAt -updatedAt -__v'
+                        }, 
+                    }
+                }) 
+            });
     }
 }
 

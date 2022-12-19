@@ -5,11 +5,21 @@ const templateSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    name: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number
+    },
     component: {
         type: String,
         required: true
     },
     madeBy: {
+        fromCommunity: {
+            type: Boolean
+        },
         email: {
             type: String
         },
@@ -36,6 +46,10 @@ const templateSchema = mongoose.Schema({
     status: {
         type: String,
         enum: ['active', 'maintenance', 'inactive']
+    },
+    version: {
+        type: String,
+        default: '1.0'
     }
 }, {
     timestamps: true

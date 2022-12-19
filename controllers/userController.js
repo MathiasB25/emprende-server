@@ -18,6 +18,7 @@ const register = async (req, res) => {
             return
         }
         const user = new User(req.body)
+        user.role = 'client';
         /* user.token = createToken() */
         await user.save()
         res.status(200).json({ success: true })
@@ -28,6 +29,10 @@ const register = async (req, res) => {
 
 const authenticate = async (req, res) => {
     const { email, password } = req.body
+
+    if(!password) {
+        return res.status(404).json({ msg: '"password" is required', success: false })
+    }
 
     // Check if user exists
     const user = await User.findOne({ email })
@@ -62,7 +67,7 @@ const authenticate = async (req, res) => {
 
 const confirm = async (req, res) => {
     const { token } = req.params
-    console.log(token)
+
     const user = await User.findOne({token})
     if(!user) {
         const error = new Error('Invalid token')
