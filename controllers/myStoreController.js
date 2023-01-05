@@ -204,11 +204,25 @@ const setTemplate = async (req, res) => {
                 select: '-createdAt -updatedAt -__v'
             }, 
         }
+    }).populate({
+        path: 'announceBar',
+        select: '-createdAt -updatedAt -__v',
+        populate: {
+            path: 'elements',
+            select: '-createdAt -updatedAt -__v',
+        }
+    }).populate({
+        path: 'footer',
+        select: '-createdAt -updatedAt -__v -_id',
+        populate: {
+            path: 'elements',
+            select: '-createdAt -updatedAt -__v -_id'
+        }
     });
     if(!template) {
         return res.json({ success: false, msg: "Template not found" })
     }
-
+    
     const store = await Store.findOne({ user: user._id })
     if(!store) {
         return res.json({ success: false, msg: "Store not found" })
@@ -228,10 +242,29 @@ const setTemplate = async (req, res) => {
     store.template = template._id;
     store.ownedTemplates.push(template._id);
     // new StoreTemplate Model
+    const announceBar = { name: 'Announce Bar', component: 'AnnounceBar', id: randomNumber(), elements: [] };
+    announceBar.elements.push({ name: template.announceBar.elements[0].name, component: template.announceBar.elements[0].component, id: randomNumber(), value: template.announceBar.elements[0].value })
+
+    const footer = { name: 'Footer', component: 'Footer', id: randomNumber(), elements: [] };
+    template.footer.elements.map( element => {
+        footer.elements.push({ name: element.name, component: element.component, id: randomNumber(), value: element.value, storeMenu: element.storeMenu })
+    })
+
+    template.pages.map( page => {
+        page.sections.map( section => {
+            section.id = randomNumber();
+            section.elements.map( (element) => {
+                element.id = randomNumber();
+            })
+        })
+    })
+
     const newStoreTemplate = new StoreTemplate({ 
         store: store._id,
         component: template.component,
+        announceBar: announceBar,
         pages: template.pages,
+        footer: footer,
         template: template._id
     });
     
@@ -246,7 +279,27 @@ const setTemplate = async (req, res) => {
 }
 
 const updateTemplate = async (req, res) => {
+    const announceBar = req.body.announceBar || {};
+    const pages = req.body.pages || {};
+    const footer = req.body.footer || {};
+
+    if(Object.keys(announceBar).length === 0 || Object.keys(pages).length === 0 || Object.keys(footer).length === 0) {
+        return res.json({ success: false, msg: "Required fields: 'announceBar', 'pages', 'footer'" })
+    }
+
+    const store = await Store.findOne({ user: req.user });
+    const storeTemplate = await StoreTemplate.findOne({ store: store._id });
     
+    storeTemplate.announceBar = announceBar;
+    storeTemplate.pages = pages;
+    storeTemplate.footer = announceBar;
+
+    try {
+        storeTemplate.save();
+        res.json({ success: true })
+    } catch (error) {
+        return res.json({ success: false, msg: 'There was a mistake' });
+    }
 }
 
 const deleteTemplate = async (req, res) => {

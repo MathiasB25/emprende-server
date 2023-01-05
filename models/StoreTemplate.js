@@ -16,15 +16,29 @@ const storeTemplateSchema = mongoose.Schema({
         required: true
     },
     announceBar: {
-        text: {
-            type: String,
-            default: "Ejemplo de texto"
-        },
-        size: {
-            type: String,
-            enum: ['xs', 'sm', 'base'],
-            default: "sm"
-        }
+        name: String,
+        component: String,
+        id: String,
+        elements: [
+            {
+                name: String,
+                component: String,
+                id: String,
+                value: {
+                    text: {
+                        type: String,
+                        default: "Ejemplo de texto"
+                    },
+                    properties: {
+                        size: {
+                            type: String,
+                            enum: ['xs', 'sm', 'base'],
+                            default: "sm"
+                        }
+                    }
+                },
+            },
+        ],
     },
     pages: [
         {
@@ -34,10 +48,18 @@ const storeTemplateSchema = mongoose.Schema({
                 {
                     name: String,
                     component: String,
+                    id: String,
                     elements: [
                         {
                             name: String,
                             component: String,
+                            id: String,
+                            storeCollection: {
+                                type: mongoose.SchemaTypes.ObjectId
+                            },
+                            storeProduct: {
+                                type: mongoose.SchemaTypes.ObjectId
+                            },
                             value: {
                                 heading: {
                                     type: String
@@ -74,7 +96,7 @@ const storeTemplateSchema = mongoose.Schema({
                                     },
                                     size: {
                                         type: String,
-                                        enum: ['small', 'medium', 'large', 'extra']
+                                        enum: ['sm', 'md', 'lg', 'xl']
                                     },
                                     weigth: {
                                         type: String
@@ -102,14 +124,74 @@ const storeTemplateSchema = mongoose.Schema({
                     style: {
                         height: {
                             type: String,
-                            enum: ['small', 'medium', 'large'],
-                            default: 'medium'
+                            enum: ['sm', 'md', 'lg'],
+                            default: 'md'
                         }
                     }
                 }
             ]
         }
-    ]
+    ],
+    footer: {
+        name: String,
+        component: String,
+        id: String,
+        elements: [
+            {
+                name: String,
+                component: String,
+                id: String,
+                storeMenu: {
+                    type: String
+                },
+                value: {
+                    heading: {
+                        type: String
+                    },
+                    text: {
+                        type: String
+                    },
+                    description: {
+                        type: String
+                    },
+                    media: {
+                        type: String
+                    },
+                    href: {
+                        type: String
+                    },
+                    alt: {
+                        type: String
+                    },
+                    properties: {
+                        link: {
+                            type: String
+                        },
+                        size: {
+                            type: String,
+                            enum: ['sm', 'md', 'lg', 'xl']
+                        },
+                        weigth: {
+                            type: String
+                        },
+                        width: {
+                            type: String
+                        },
+                        align: {
+                            type: String,
+                            enum: ['left', 'center', 'right']
+                        },
+                        bg: {
+                            type: String
+                        },
+                        color: {
+                            type: String
+                        }
+                    }
+                }
+            }
+        ]
+    }
 }, {
     timestamps: true
 })

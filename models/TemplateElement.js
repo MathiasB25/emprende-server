@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 const templateElementSchema = mongoose.Schema({
     name: {
@@ -8,9 +8,20 @@ const templateElementSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    id: {
+        type: String
+    },
     storeCollection: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'StoreCollection'
+    },
+    storeProduct: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'StoreProduct'
+    },
+    storeMenu: {
+        type: String,
+        // ref: 'StoreMenu'
     },
     value: {
         heading: {
@@ -48,7 +59,7 @@ const templateElementSchema = mongoose.Schema({
             },
             size: {
                 type: String,
-                enum: ['small', 'medium', 'large', 'extra']
+                enum: ['sm', 'md', 'lg', 'xl']
             },
             weigth: {
                 type: String

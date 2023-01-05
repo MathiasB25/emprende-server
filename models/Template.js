@@ -37,12 +37,20 @@ const templateSchema = mongoose.Schema({
         type: String,
         default: "https://res.cloudinary.com/dlvsdz9k1/image/upload/v1667917667/tbdefault.png"
     },
+    announceBar: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'TemplateSection'
+    },
     pages: [
         {
             type: mongoose.SchemaTypes.ObjectId,
             ref: 'TemplatePage'
         }
     ],
+    footer: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'TemplateSection'
+    },
     status: {
         type: String,
         enum: ['active', 'maintenance', 'inactive']

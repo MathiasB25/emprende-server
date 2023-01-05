@@ -9,6 +9,7 @@ const templateSectionSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    id: String,
     elements: [
         {
             type: mongoose.SchemaTypes.ObjectId,
@@ -18,8 +19,8 @@ const templateSectionSchema = mongoose.Schema({
     style: {
         height: {
             type: String,
-            enum: ['small', 'medium', 'large'],
-            default: 'medium'
+            enum: ['sm', 'md', 'lg'],
+            default: 'md'
         }
     }
 }, {

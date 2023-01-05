@@ -6,7 +6,7 @@ export const getStore = async (req, res) => {
     const store = await Store.findOne({ url });
 
     if(!store) {
-        return res.status(404).json({ success: false, msg: 'Store not found' });
+        return res.json({ success: false, msg: 'Store not found' });
     }
 
     if(!store.template) {
